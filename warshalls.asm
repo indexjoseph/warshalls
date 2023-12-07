@@ -7,10 +7,10 @@
 # Assignment: Warshalls Algorithm (Honors Project)
 #
 # Description: In this project we were tasked with implementing Warshalls 
-# Algorithm. This algorithm uses a register and each bit
-# to store the values of the adjacency matrix. The algorithm is used to find
-# the transitive closure of a graph. This program will display the before and
-# after of the transitive closure of the graph.
+# Algorithm. This algorithm uses a register and each bit to store the values of 
+# the adjacency matrix. The algorithm is used to find the transitive closure of 
+# a graph. This program will display the before and after of the transitive 
+# closure of the graph.
 #
 ###############################################################################
 
@@ -19,6 +19,8 @@
 newline: .asciiz "\n"
 space: .asciiz " "
 debug: .asciiz "DEBUG"
+beforeGraph: .asciiz "\nBefore:\n"
+afterGraph: .asciiz "\nAfter:\n"
 
 #----------------------------- Text Segment -----------------------------------
 .text
@@ -54,6 +56,11 @@ mul $s7, $s0, $s0 # num loops for printing matrix
 
 #----------------------------- Display Matrix ---------------------------------
 add $t3, $s1, $zero
+
+la $a0, beforeGraph
+li $v0, 4
+syscall
+
 displayMatrix:
     li      $s5,    1
     bge     $t0,    $s7,    endDisplayMatrix
@@ -136,7 +143,7 @@ jLoop:
     or $s1, $t5, $t9 # graph[i][j] | (graph[i][k] & graph[j][k])
     
 
-    addi $s4, $s4, 1 
+    addi $s4, $s4, 1
     j jLoop
 
 restartILoop:
@@ -145,6 +152,12 @@ restartILoop:
 
 endTransitiveClosure:
     li $s6, 1 # set flag to 1
+    la $a0, afterGraph
+    li $v0, 4
+
+    syscall
+    li $t0, 0
+
     j displayMatrix
 
 end:
