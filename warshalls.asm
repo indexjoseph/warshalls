@@ -18,6 +18,7 @@
 
 newline: .asciiz "\n"
 space: .asciiz " "
+debug: .asciiz "DEBUG"
 
 #----------------------------- Text Segment -----------------------------------
 .text
@@ -52,7 +53,7 @@ li $t0, 0 # index for displayMatrix
 mul $s7, $s0, $s0 # num loops for printing matrix
 
 #----------------------------- Display Matrix ---------------------------------
-
+add $t3, $s1, $zero
 displayMatrix:
     li      $s5,    1
     bge     $t0,    $s7,    endDisplayMatrix
@@ -68,7 +69,7 @@ displayMatrix:
     syscall
 
 printBit:
-    and     $t2,    $s1, $s5 # t2 = graph[i][j] & mask
+    and     $t2,    $t3,    $s5 # t2 = graph[i][j] & mask
     move    $a0,    $t2 # move graph[i][j] & mask into $a0
     li      $v0,    1
     syscall
@@ -80,7 +81,7 @@ printBit:
 
     addi $t0, $t0, 1
     sll $s5, $s5, 1 # shift mask left by 1
-    srl $s1, $s1, 1 # shift matrix left by 1
+    srl $t3, $t3, 1 # shift matrix left by 1
     j displayMatrix
 
 endDisplayMatrix:
