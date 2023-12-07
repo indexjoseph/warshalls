@@ -52,52 +52,24 @@ li $t0, 0 # index for displayMatrix
 mul $s7, $s0, $s0 # num loops for printing matrix
 
 #----------------------------- Display Matrix ---------------------------------
-# displayMatrix:
-#     li $t0, -1
-
-# outerLoop:
-#     # Print Newline
-#     la      $a0,    newline
-#     li      $v0,    4
-#     syscall 
-
-#     # Check if rowNum is greater than number of rows and exit if so
-#     bge     $t0,    $s0,    exitOuterLoop
-    
-#     # Inner loop index
-#     li      $t2,    0
-
-# innerLoop:
-#     bge $t2, $s0, outerLoop
-#     add $t1, $s1, $zero
-#     and $t2, $t1, 0x1
-
-#     # Increment inner loop by 1
-#     addi $a0, $t2, $zero
-#     li      $v0,    4
-#     syscall 
-#     srl $t1, $t1, 1 
-#     j innerLoop
-
-# exitOuterLoop:
 
 displayMatrix:
-    bge $t0, $s7, endDisplayMatrix
+    li      $s5,    1
+    bge     $t0,    $s7,    endDisplayMatrix
 
-    li $s5, 1
 
     # if t0 % s0 == 0 then print new line
-    div $t1, $t0, $s0
-    mfhi $t2
-    bne $t2, $zero, printBit
+    div     $t1,    $t0,     $s0
+    mfhi    $t2
+    bne     $t2,    $zero,   printBit
 
     la      $a0,    newline
     li      $v0,    4
     syscall
 
 printBit:
-    and $t2, $s1, $s5 # t2 = graph[i][j] & mask
-    move $a0, $t2 # move graph[i][j] & mask into $a0
+    and     $t2,    $s1, $s5 # t2 = graph[i][j] & mask
+    move    $a0,    $t2 # move graph[i][j] & mask into $a0
     li      $v0,    1
     syscall
 
@@ -108,6 +80,7 @@ printBit:
 
     addi $t0, $t0, 1
     sll $s5, $s5, 1 # shift mask left by 1
+    srl $s1, $s1, 1 # shift matrix left by 1
     j displayMatrix
 
 endDisplayMatrix:
