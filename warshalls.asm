@@ -18,7 +18,6 @@
 
 newline: .asciiz "\n"
 space: .asciiz " "
-matrix: .asciiz 10101 01010 10101 01010 10101
 
 #----------------------------- Text Segment -----------------------------------
 .text
