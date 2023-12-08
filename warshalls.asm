@@ -18,9 +18,6 @@
 
 newline: .asciiz "\n"
 space: .asciiz " "
-debug: .asciiz "DEBUG"
-beforeGraph: .asciiz "\nBefore:\n"
-afterGraph: .asciiz "\nAfter:\n"
 
 #----------------------------- Text Segment -----------------------------------
 .text
@@ -55,10 +52,6 @@ li $s6, 0 # flag representing if transitive closure has been clompleted
 
 #----------------------------- Display Matrix ---------------------------------
 
-
-la $a0, beforeGraph
-li $v0, 4
-syscall
 
 displayMatrixSetup:
     li $t0, 0 # index for displayMatrix
@@ -163,10 +156,6 @@ restartILoop:
 
 endTransitiveClosure:
     li $s6, 1 # set flag to 1
-    la $a0, afterGraph
-    li $v0, 4
-
-    syscall
     li $t0, 0
 
     j displayMatrixSetup
