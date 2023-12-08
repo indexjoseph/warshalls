@@ -134,23 +134,21 @@ jLoop:
     sll $t1, $t1, $t4 # mask for graph[i][k]
 
     mul $t5, $s2, $s0 # k * n
-    add $t5, $t5, $s4 # k * n + j
+    add $t5, $t5, $s4 # j * n + k
     sll $t2, $t2, $t5 # mask for graph[j][k]
 
-    # t7 = graph[i][j], t8 = graph[i][k], t9 = graph[j][k]
     and $t0, $s1, $t0 # graph[i][j]
     and $t1, $s1, $t1 # graph[i][k]
     and $t2, $s1, $t2 # graph[j][k]
 
-    srl $t0, $t0, $t3 # shift graph[i][j] right by k
-    srl $t1, $t1, $t4 # shift graph[i][k] right by k
-    srl $t2, $t2, $t5 # shift graph[j][k] right by j
+    srl $t0, $t0, $t3 # shift graph[i][j] right by i * n + j
+    srl $t1, $t1, $t4 # shift graph[i][k] right by i * n + k
+    srl $t2, $t2, $t5 # shift graph[j][k] right by j * n + k
 
-    # t10 = graph[i][j] | (graph[i][k] & graph[j][k])
     and $t6, $t1, $t2 # graph[i][k] & graph[j][k]
     or $t0, $t0, $t6 # graph[i][j] | (graph[i][k] & graph[j][k])
 
-    sll $t0, $t0, $t3 # shift graph[i][j] left by k
+    sll $t0, $t0, $t3 # shift graph[i][j] left by i * n + j
     or $s1, $s1, $t0 # graph[i][j] = graph[i][j] | (graph[i][k] & graph[j][k])
     
 
