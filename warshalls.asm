@@ -18,7 +18,6 @@
 
 newline: .asciiz "\n"
 space: .asciiz " "
-debug: .asciiz "DEBUG"
 beforeGraph: .asciiz "\nBefore:\n"
 afterGraph: .asciiz "\nAfter:\n"
 
@@ -32,8 +31,9 @@ main:
 
 ###########################################################################
 # main:
-#  Main procedure that calls the display matrix procedure and the warshalls
-#  algorithm procedure.
+#  Main procedure that prints the graph using display matrix and then use 
+# warshalls algorithm to perform transitive closure on the graph and then 
+# print the once again.
 #
 # Register Legend
 #   $s0 -- row size
@@ -41,20 +41,23 @@ main:
 #   $s2 -- k
 #   $s3 -- i
 #   $s4 -- j
-#   $a0 -- 
+#   $s5 -- mask for printing bits
+#   $s6 -- flag representing if transitive closure has been clompleted
+#   $s7 -- number of loops for printing matrix
+#   $t  -- masks, index calculations, loop counters, extrcted bits
 ########################################################################### 
 
-# # 3x3 graph
-# li $s0, 3 # row size
-# li $s1, 43 # load matrix into register
+# 3x3 graph
+li $s0, 3 # row size
+li $s1, 43 # load matrix into register
 
 # # 4x4 graph
 # li $s0, 4 # row size
 # li $s1, 16916 # load matrix into register
 
-# 5x5 graph
-li $s0, 5 # row size
-li $s1, 13107250 # load matrix into register
+# # 5x5 graph
+# li $s0, 5 # row size
+# li $s1, 13107250 # load matrix into register
 
 # mov $a0, $s0 # move matrix into register
 # jal displayMatrix # jump to displayMatrix
