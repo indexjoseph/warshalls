@@ -44,8 +44,18 @@ main:
 #   $a0 -- 
 ########################################################################### 
 
-li $s0, 3 # row size
-li $s1, 43 # load matrix into register
+# # 3x3 graph
+# li $s0, 3 # row size
+# li $s1, 43 # load matrix into register
+
+# # 4x4 graph
+# li $s0, 4 # row size
+# li $s1, 16916 # load matrix into register
+
+# 5x5 graph
+li $s0, 5 # row size
+li $s1, 13107250 # load matrix into register
+
 # mov $a0, $s0 # move matrix into register
 # jal displayMatrix # jump to displayMatrix
 li $s2, 0 # k
@@ -110,11 +120,9 @@ transitiveClosure:
 
     li $s3, 0 # i
     
-    addi $s2, $s2, 1 
-    
 
 iLoop:
-    bge $s3, $s0, transitiveClosure # if i >= n then end
+    bge $s3, $s0, restartTransitiveClosure # if i >= n then end
 
     li $s4, 0 # j
 
@@ -134,7 +142,7 @@ jLoop:
     sll $t1, $t1, $t4 # mask for graph[i][k]
 
     mul $t5, $s2, $s0 # k * n
-    add $t5, $t5, $s4 # j * n + k
+    add $t5, $t5, $s4 # k * n + j
     sll $t2, $t2, $t5 # mask for graph[j][k]
 
     and $t0, $s1, $t0 # graph[i][j]
@@ -158,6 +166,10 @@ jLoop:
 restartILoop:
     addi $s3, $s3, 1 
     j iLoop
+
+restartTransitiveClosure:
+    addi $s2, $s2, 1
+    j transitiveClosure
 
 endTransitiveClosure:
     li $s6, 1 # set flag to 1
