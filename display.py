@@ -1,40 +1,47 @@
-import graphviz
+import sys
 
-def parse_matrix(input_str):
-    lines = input_str.strip().split('\n')
-    matrix = []
-    for line in lines:
-        # Skip lines that do not represent matrix entries
-        if any(char.isalpha() for char in line):
-            continue
-        matrix.append(list(map(int, line.split())))
-    return matrix
+# Read input from the redirected file
+graphList = []
+fileInput = "warshalls-input"
+fileOutput = "warshalls-output"
+vertices = 3
+beforeFileContent = "digraph warshalls-input{\n"
+afterFileContent = "digraph warshalls-output{\n"
 
-def generate_dot_file(matrix, output_path='graph'):
-    dot = graphviz.Digraph(comment='Matrix Graph')
+for line in sys.stdin:
+    # Process each line as needed
+    if(len(line.strip()) != 0):
+        graphList.append(line.strip())
+        print(line.strip())
 
-    for i, row in enumerate(matrix):
-        for j, value in enumerate(row):
-            dot.node(f'{i}_{j}', str(4))
-    
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            if j + 1 < len(matrix[0]):
-                dot.edge(f'{i}_{j}', f'{i}_{j+1}')
-            if i + 1 < len(matrix):
-                dot.edge(f'{i}_{j}', f'{i+1}_{j}')
+beforeList = graphList[:3]
+afterList = graphList[3:]
 
-    dot.render("./graph.dot", format='png', cleanup=True)
+for i in range(len(beforeList)):
+    beforeFileContent += "\t" + str(i) + "[label=\"" + str(i) + "\"]\n"
+    afterFileContent += "\t" + str(i) + "[label=" + str(i) + "]\n"
 
-if __name__ == "__main__":
-    input_str = """Before:
-    1 1 0 
-    1 0 1 
-    0 0 0"""
+for i in range(len(beforeList)):
+    row = beforeList[i].split()
+    for j in range(len(row)):
+        if(row[j] == "1"):
+            beforeFileContent += "\t" + str(i) + "->" + str(row[j]) + "\n"
+beforeFileContent += "}"
 
-    # Extract matrix from the input string
-    matrix = parse_matrix(input_str)
+for i in range(len(afterList)):
+    row = afterList[i].split()
+    for j in range(len(row)):
+        if(row[j] == "1"):
+            afterFileContent += "\t" + str(i) + "->" + str(row[j]) + "\n"
+afterFileContent += "}"
 
-    # Generate dot file and visualize using Graphviz
-    generate_dot_file(matrix)
-    print("Graph created successfully. Check the 'graph.png' file.")
+
+with open(fileInput, "w") as f:
+    f.write(beforeFileContent)
+
+with open(fileOutput, "w") as f:
+    f.write(afterFileContent)
+
+
+
+
