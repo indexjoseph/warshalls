@@ -15,11 +15,10 @@ for line in sys.stdin:
         graphList.append(line.strip())
 
 # Get the list of vertices before transitive closure
-beforeList = graphList[1:4]
+beforeList = graphList[2:5]
 
 # Get the list of vertices after transitive closure
-afterList = graphList[4:]
-
+afterList = graphList[6:]
 
 for i in range(len(beforeList)):
     beforeFileContent += "\t" + str(i) + "[label=\"" + str(i) + "\"]\n"
