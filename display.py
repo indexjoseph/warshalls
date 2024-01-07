@@ -5,20 +5,19 @@ import os
 graphList = []
 fileInput = "warshalls_in.dot"
 fileOutput = "warshalls_out.dot"
-vertices = 3
+vertices = 5
 beforeFileContent = "digraph warshalls_input{\n"
 afterFileContent = "digraph warshalls_output{\n"
 
-for line in sys.stdin:
-    # Process each line as needed
-    if(len(line.strip()) != 0):
-        graphList.append(line.strip())
+
+# Process each line as needed
+graphList = [line for line in sys.stdin if len(line.strip()) != 0]
 
 # Get the list of vertices before transitive closure
-beforeList = graphList[2:5]
+beforeList = graphList[2:7]
 
 # Get the list of vertices after transitive closure
-afterList = graphList[6:]
+afterList = graphList[8:]
 
 for i in range(len(beforeList)):
     beforeFileContent += "\t" + str(i) + "[label=\"" + str(i) + "\"]\n"
