@@ -44,5 +44,3 @@ with open(fileOutput, "w") as f:
 
 os.system("dot -Tpng " + fileInput + " -o " + fileInput + ".png")
 os.system("dot -Tpng " + fileOutput + " -o " + fileOutput + ".png")
-
-
